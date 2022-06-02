@@ -33,8 +33,63 @@ class _AudioFileState extends State<AudioFile> {
     widget.advancedPlayer.setUrl(path);
   }
 
+  Widget btnStart() {
+    return IconButton(
+      onPressed: () {
+        if (isPlaying) {
+          widget.advancedPlayer.pause();
+          setState(() {
+            isPlaying = false;
+            isPaused = true;
+          });
+        } else {
+          if (isPaused && !isPlaying) {
+            widget.advancedPlayer.resume();
+            setState(() {
+              isPaused = false;
+              isPlaying = true;
+            });
+          } else {
+            widget.advancedPlayer.play(path);
+            setState(() {
+              isPlaying = true;
+            });
+          }
+        }
+      },
+      icon: (isPlaying)
+          ? const Icon(Icons.pause_circle)
+          : const Icon(Icons.play_arrow),
+    );
+  }
+
+  Widget loadAsset() {
+    return Container(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          btnStart(),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Container(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [],
+            ),
+          ),
+          loadAsset(),
+        ],
+      ),
+    );
   }
 }
